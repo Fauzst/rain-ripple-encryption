@@ -15,7 +15,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-
+from decimal import Decimal, getcontext
 class LorenzSystem:
 
     """
@@ -77,10 +77,11 @@ class LorenzSystem:
         dt = self.dt
         time = self.time
         sigma, rho, beta = self.sigma, self.rho, self.beta
-        xs = np.empty(time + 1)
-        ys = np.empty(time + 1)
-        zs = np.empty(time + 1)
+        xs = np.empty(time + 1, dtype=object)
+        ys = np.empty(time + 1, dtype=object)
+        zs = np.empty(time + 1, dtype=object)
         xs[0], ys[0], zs[0] = x, y, z
+        getcontext().prec = 77
 
         # For Loop to process the first to fourth order of Runge Kutta
         for i in range(time):
@@ -93,8 +94,16 @@ class LorenzSystem:
             y += (dt / 6) * (dy1 + 2 * dy2 + 2 * dy3 + dy4)
             z += (dt / 6) * (dz1 + 2 * dz2 + 2 * dz3 + dz4)
 
-            xs[i + 1] = x
-            ys[i + 1] = y
-            zs[i + 1] = z
-        print(np.array([xs[-1], ys[-1], zs[-1]]))
+            x_decimal = Decimal(str(x))
+            y_decimal = Decimal(str(y))
+            z_decimal = Decimal(str(z))
+
+            x_str = str(x_decimal).replace('.','').lstrip('0')
+            y_str = str(y_decimal).replace('.','').lstrip('0')
+            z_str = str(z_decimal).replace('.','').lstrip('0')
+
+            xs[i + 1] = int(x_str)
+            ys[i + 1] = int(y_str)
+            zs[i + 1] = int(z_str)
+        print(np.array([xs[-1], ys[-1], zs[-1]], dtype=object).tolist())
         return np.array([xs, ys, zs])
