@@ -4,7 +4,7 @@ Function: Module for processing image such as encoding it to binaries or decodin
 Author: PURA, Joshua Elijah L.
 Date Created: October 6, 2025
 Date Updated: October 6, 2025
-Version: 0.0.2
+Version: 0.0.3
 """
 import os
 
@@ -31,7 +31,10 @@ class ImageProcessor:
             >
 
         """
-        # Checks if the file is not a valid type.
+        # Checks if the file is not a valid file and data type.
+        if not isinstance(image, str):
+            raise TypeError("The image must be a file path string.")
+
         extension = os.path.splitext(image)[1].lower()
         if extension not in ['.png', '.jpg', '.jpeg']:
             raise ValueError("Only JPG or PNG images are accepted.")
@@ -91,10 +94,16 @@ class ImageProcessor:
         """
         try:
             self.__image_encoder(image)
+        except TypeError as te:
+            print(f"Type error: {te}")
+            raise
         except ValueError as ve:
             print(f"Validation error: {ve}")
+            raise
         except Exception as e:
             print(f"Unexpected error: {e}")
+            raise
+
 
     def image_decode(self, binary):
         """
