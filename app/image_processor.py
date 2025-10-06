@@ -4,9 +4,11 @@ Function: Module for processing image such as encoding it to binaries or decodin
 Author: PURA, Joshua Elijah L.
 Date Created: October 6, 2025
 Date Updated: October 6, 2025
-Version: 0.0.1
+Version: 0.0.2
 """
-from PIL import Image
+import os
+
+from PIL import Image, UnidentifiedImageError
 import numpy as np
 
 class ImageProcessor:
@@ -23,25 +25,37 @@ class ImageProcessor:
         Arguments:
             image (string): Path to the image to be encoded.
         Returns:
-            hex_array: An array of encoded bytes of the image.
+            nothing.
         Raises:
-            > Accepts different files such as pdf, word, xslx. It should only accept jpg.
-            > Accepts different dimension of image. It should only accept 360 x 360 pixels image.
-            
+            >ValueError: If the image is not a valid file extension type.
+            >
+
         """
-        img = Image.open(image).convert("RGB")
+        # Checks if the file is not a valid type.
+        extension = os.path.splitext(image)[1].lower()
+        if extension not in ['.png', '.jpg', '.jpeg']:
+            raise ValueError("Only JPG or PNG images are accepted.")
+
+        try:
+            img = Image.open(image).convert("RGB")
+        except UnidentifiedImageError:
+            raise ValueError("File is not a valid image")
+
+        print(img.width)
+        print(img.height)
+
+        # Checks if the file is not the valid dimension.
+
+        if img.width != ImageProcessor.__WIDTH or img.height != ImageProcessor.__HEIGHT:
+            raise ValueError(f"Image must be {ImageProcessor.__WIDTH}x{ImageProcessor.__HEIGHT} pixels.")
+
+        # Converts the image into a NumPy array. Then convert it into bytes.
         img_array = np.array(img)
         img_bytes = img_array.tobytes()
-        hex_array = np.apply_along_axis(lambda pixel: "{:02x}{:02x}{:02x}".format(*pixel), 2, img_array)
-        # For Debug Logging
-        """
-        for row in hex_array:
-        print(" ".join(row))
-        """
 
+        # Create a binary file containing image information.
         with open("img.bin", "wb") as file:
             file.write(img_bytes)
-        return hex_array
 
     @staticmethod
     def __image_decoder(bin):
@@ -75,7 +89,12 @@ class ImageProcessor:
         Raises:
             no error detected yet.
         """
-        self.__image_encoder(image)
+        try:
+            self.__image_encoder(image)
+        except ValueError as ve:
+            print(f"Validation error: {ve}")
+        except Exception as e:
+            print(f"Unexpected error: {e}")
 
     def image_decode(self, binary):
         """
