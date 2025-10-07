@@ -4,8 +4,8 @@ Function: Module for doing Lorenz system-related calculations which returns thre
           numbers to be used as a first phase encryption key.
 Author: PURA, Joshua Elijah L.
 Date Created: September 30, 2025
-Date Updated: September 30, 2025
-Version: 0.0.1
+Date Updated: October 7, 2025
+Version: 0.0.2
 Imported Libraries:
 """
 
