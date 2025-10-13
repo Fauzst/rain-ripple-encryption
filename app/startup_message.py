@@ -37,4 +37,5 @@ def startup_message():
     print("All rights reserved. 2025")
     print("Note: This program was written for academic purposes only.")
     print("=================================================================")
+    time.sleep(3)
 

@@ -16,6 +16,8 @@ from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from decimal import Decimal, getcontext
+
+
 class LorenzSystem:
 
     """
@@ -54,7 +56,7 @@ class LorenzSystem:
         no error detected yet.    
     """
     @staticmethod
-    def lorenz( sigma, rho, beta, x = 1.0, y = 1.0, z = 1.0):
+    def __lorenz( sigma, rho, beta, x = 1.0, y = 1.0, z = 1.0):
         dx = sigma * (y - x)
         dy = x * (rho - z) - y
         dz = x * y - beta * z
@@ -71,7 +73,7 @@ class LorenzSystem:
     Raises:
         no error detected yet. 
     """
-    def runge_kutta(self):
+    def __runge_kutta(self):
         # Initiating values and arrays needed
         x, y, z = self.x, self.y, self.z
         dt = self.dt
@@ -85,10 +87,10 @@ class LorenzSystem:
 
         # For Loop to process the first to fourth order of Runge Kutta
         for i in range(time):
-            dx1, dy1, dz1 = LorenzSystem.lorenz(x, y, z, sigma, rho, beta)
-            dx2, dy2, dz2 = LorenzSystem.lorenz(x + dx1 * dt / 2, y + dy1 * dt / 2, z + dz1 * dt / 2, sigma, rho, beta)
-            dx3, dy3, dz3 = LorenzSystem.lorenz(x + dx2 * dt / 2, y + dy2 * dt / 2, z + dz2 * dt / 2, sigma, rho, beta)
-            dx4, dy4, dz4 = LorenzSystem.lorenz(x + dx3 * dt, y + dy3 * dt, z + dz3 * dt, sigma, rho, beta)
+            dx1, dy1, dz1 = self.__lorenz(x, y, z, sigma, rho, beta)
+            dx2, dy2, dz2 = self.__lorenz(x + dx1 * dt / 2, y + dy1 * dt / 2, z + dz1 * dt / 2, sigma, rho, beta)
+            dx3, dy3, dz3 = self.__lorenz(x + dx2 * dt / 2, y + dy2 * dt / 2, z + dz2 * dt / 2, sigma, rho, beta)
+            dx4, dy4, dz4 = self.__lorenz(x + dx3 * dt, y + dy3 * dt, z + dz3 * dt, sigma, rho, beta)
 
             x += (dt / 6) * (dx1 + 2 * dx2 + 2 * dx3 + dx4)
             y += (dt / 6) * (dy1 + 2 * dy2 + 2 * dy3 + dy4)
@@ -105,5 +107,11 @@ class LorenzSystem:
             xs[i + 1] = int(x_str)
             ys[i + 1] = int(y_str)
             zs[i + 1] = int(z_str)
+        print("=================================================================")
+        print("Encryption Key: ")
         print(np.array([xs[-1], ys[-1], zs[-1]], dtype=object).tolist())
         return np.array([xs, ys, zs])
+
+    def get_key(self):
+        self.__runge_kutta()
+

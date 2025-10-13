@@ -43,10 +43,6 @@ class ImageProcessor:
             img = Image.open(image).convert("RGB")
         except UnidentifiedImageError:
             raise ValueError("File is not a valid image")
-
-        print(img.width)
-        print(img.height)
-
         # Checks if the file is not the valid dimension.
 
         if img.width != ImageProcessor.__WIDTH or img.height != ImageProcessor.__HEIGHT:

@@ -3,9 +3,7 @@ from dotenv import load_dotenv
 
 
 class EnvLoader:
-    def __init__(self):
-        if not os.path.exists('.env'):
-            raise FileNotFoundError('.env not found')
+    def __init__(self, path=".env"):
         load_dotenv()
 
     @staticmethod

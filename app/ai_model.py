@@ -21,8 +21,6 @@ class AIModel:
             api_key=self.api_key
         )
 
-
-        print(json.dumps(CLIENT.infer(image_path, model_id=self.model_id), indent=4))
         return CLIENT.infer(image_path, model_id=self.model_id)
 
     def get_model_result(self):
