@@ -1,28 +1,28 @@
+#=============== HEADER =======================================
 """
 Document: lorenz_system.py
-Function: Module for doing Lorenz system-related calculations which returns three floating
+Function: Module for doing Lorenz system-related calculations
+          which returns three floating
           numbers to be used as a first phase encryption key.
 Author: PURA, Joshua Elijah L.
 Date Created: September 30, 2025
-Date Updated: September 30, 2025
-Version: 0.0.1
-Imported Libraries:
+Date Updated: October 13, 2025
+Version: 0.0.2
 """
+#===============================================================
 
-#Imports
-
+#=========== LIBRARIES =========================================
 import numpy as np
-from scipy.integrate import solve_ivp
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 from decimal import Decimal, getcontext
+#===============================================================
 
-
+#=========== CLASS =============================================
 class LorenzSystem:
 
     """
     Function: __init__
-    Description: This function gets triggered when the LorenzSystem object is instantiated.
+    Description: This function gets triggered when the
+                 LorenzSystem object is instantiated.
     Arguments:
         sigma (float): The sigma parameter of the Lorenz system.
         rho (float): The rho parameter of the Lorenz system.
@@ -34,6 +34,19 @@ class LorenzSystem:
         no error detected yet.
     """
     def __init__(self, sigma, rho, beta, time, x = 1.0, y = 1.0, z = 1.0):
+        """
+        Function: lorenz
+        Description: This function returns the differential
+                     values of x, y, and z with respect to time t in an array format.
+        Arguments:
+            sigma (float): The sigma parameter of the Lorenz system.
+            rho (float): The rho parameter of the Lorenz system.
+            beta (float): The beta parameter of the Lorenz system.
+        Returns:
+            array: This function returns a numpy array of the solved dx, dy, and dz.
+        Raises:
+            no error detected yet.
+        """
         self.x = x
         self.y = y
         self.z = z
@@ -43,37 +56,41 @@ class LorenzSystem:
         self.sigma = sigma
         self.dt = 0.01
 
-    """
-    Function: lorenz
-    Description: This function returns the differential values of x, y, and z with respect to time t in an array format.
-    Arguments:
-        sigma (float): The sigma parameter of the Lorenz system.
-        rho (float): The rho parameter of the Lorenz system.
-        beta (float): The beta parameter of the Lorenz system.
-    Returns:
-        array: This function returns a numpy array of the solved dx, dy, and dz.
-    Raises:
-        no error detected yet.    
-    """
     @staticmethod
     def __lorenz( sigma, rho, beta, x = 1.0, y = 1.0, z = 1.0):
+        """
+        Function: lorenz
+        Description: This function returns the differential values
+                     of x, y, and z with respect to time t in an array format.
+        Arguments:
+            sigma (float): The sigma parameter of the Lorenz system.
+            rho (float): The rho parameter of the Lorenz system.
+            beta (float): The beta parameter of the Lorenz system.
+        Returns:
+            array: This function returns a numpy array of the solved dx, dy, and dz.
+        Raises:
+            no error detected yet.
+        """
         dx = sigma * (y - x)
         dy = x * (rho - z) - y
         dz = x * y - beta * z
         return np.array([dx, dy, dz])
 
-    """
-    Function: runge_kutta
-    Description: This function process and computes the Lorenz system trajectory using 4th-order Runge-Kutta method.
-                 This method numerically integrates the Lorenz differential equations over time, starting from the
-                 initial (x, y, z) values.
-    
-    Returns:
-        array: This function returns a numpy array of the last values processed from xs, ys, and zs.
-    Raises:
-        no error detected yet. 
-    """
+
     def __runge_kutta(self):
+        """
+        Function: runge_kutta
+        Description: This function process and computes the Lorenz
+                     system trajectory using 4th-order Runge-Kutta method.
+                     This method numerically integrates the Lorenz
+                     differential equations over time, starting from the
+                     initial (x, y, z) values.
+
+        Returns:
+            array: This function returns a numpy array of the last values processed from xs, ys, and zs.
+        Raises:
+            no error detected yet.
+        """
         # Initiating values and arrays needed
         x, y, z = self.x, self.y, self.z
         dt = self.dt
@@ -115,3 +132,4 @@ class LorenzSystem:
     def get_key(self):
         self.__runge_kutta()
 
+#=================== END OF SOURCE CODE ======================================

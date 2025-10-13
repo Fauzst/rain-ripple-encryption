@@ -1,16 +1,22 @@
+#============== HEADER =============================================
 """
 Document: image_processor.py
-Function: Module for processing image such as encoding it to binaries or decoding binaries into image.
+Function: Module for processing image such as encoding it to
+          binaries or decoding binaries into image.
 Author: PURA, Joshua Elijah L.
 Date Created: October 6, 2025
 Date Updated: October 6, 2025
 Version: 0.0.3
 """
-import os
+#====================================================================
 
+#=============== LIBRARIES ==========================================
+import os
 from PIL import Image, UnidentifiedImageError
 import numpy as np
+#====================================================================
 
+#=============== CLASS ==============================================
 class ImageProcessor:
     __HEIGHT = 360
     __WIDTH = 360
@@ -20,7 +26,8 @@ class ImageProcessor:
     def __image_encoder(image):
         """
         Function: __image_encoder(image)
-        Description: This private function accept a file path then locate that file path, open and read it, then
+        Description: This private function accept a file path then
+                     locate that file path, open and read it, then
                      encode it into a binary file.
         Arguments:
             image (string): Path to the image to be encoded.
@@ -104,7 +111,8 @@ class ImageProcessor:
     def image_decode(self, binary):
         """
         Function: image_decode(binary)
-        Description: This public function serves as the getter of the private __image_decoder function.
+        Description: This public function serves as the getter
+                     of the private __image_decoder function.
         Arguments:
         self (ImageProcessor): Image processor instance.
         binary (string): Binary encoded image.
@@ -114,3 +122,5 @@ class ImageProcessor:
             no error detected yet.
         """
         self.__image_decoder(binary)
+
+#=========================== END OF SOURCE CODE ======================================
