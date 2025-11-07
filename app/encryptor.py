@@ -4,8 +4,8 @@ Document: encryptor.py
 Function: Module for the encryption processes.
 Author: PURA, Joshua Elijah L.
 Date Created: November 5, 2025
-Date Updated: November 5, 2025
-Version: 0.0.1
+Date Updated: November 7, 2025
+Version: 0.0.2
 """
 from itertools import zip_longest
 
@@ -194,7 +194,7 @@ class Encryptor:
         """
         Function: __f__
         Description: This private function contains algorithm to rotate the
-                     front face of the cube.
+                     front face of the cube clockwise.
         Parameters:
             rep (int): The number of repetitions of the rotation.
         Returns:
@@ -234,8 +234,54 @@ class Encryptor:
             print(d_new)
             print(l_new)
 
-    def fMove(self, rep):
-        self.__f__(rep)
+    def __fc__ (self, rep):
+        """
+                Function: __fc__
+                Description: This private function contains algorithm to rotate the
+                             front face of the cube counterclockwise.
+                Parameters:
+                    rep (int): The number of repetitions of the rotation.
+                Returns:
+                    None.
+                Raises:
+                    none
+                """
+        for i in range(rep):
+            # rotate f face
+            f_new = np.rot90(self.f, k=1)
+
+            # Update affected column when f face is rotated
+            u_new = np.array([self.u[0], self.u[1], self.r[:, 0]])
+            r_new = np.array([
+                [self.d[0][0], self.r[0][1], self.r[2][2]],
+                [self.d[0][1], self.r[1][1], self.r[1][2]],
+                [self.d[0][2], self.r[2][1], self.r[2][2]]
+            ])
+            d_new = np.array([self.l[:, 2], self.d[1], self.d[2]])
+            l_new = np.array([
+                [self.l[0][0], self.l[0][1], self.u[2][0]],
+                [self.l[1][0], self.l[1][1], self.u[2][1]],
+                [self.l[2][0], self.l[2][1], self.u[2][2]]
+            ])
+
+            # Save the changes on the class arrays
+            self.f = np.array(f_new)
+            self.d = np.array(d_new)
+            self.u = np.array(u_new)
+            self.r = np.array(r_new)
+            self.l = np.array(l_new)
+
+            print(f"This is ${i} rotation")
+            print(f_new)
+            print(u_new)
+            print(r_new)
+            print(d_new)
+            print(l_new)
+
+    def fcMove (self, rep):
+        self.__fc__(rep)
+
+
 
 
 
@@ -295,4 +341,4 @@ enkrip.d = D
 enkrip.r = R
 enkrip.l = L
 
-enkrip.fMove()
+enkrip.fcMove(1)
