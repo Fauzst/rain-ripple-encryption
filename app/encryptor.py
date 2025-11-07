@@ -243,16 +243,16 @@ class Encryptor:
 
     def __fc__ (self, rep):
         """
-                Function: __fc__
-                Description: This private function contains algorithm to rotate the
-                             front face of the cube counterclockwise.
-                Parameters:
-                    rep (int): The number of repetitions of the rotation.
-                Returns:
-                    None.
-                Raises:
-                    none
-                """
+            Function: __fc__
+            Description: This private function contains algorithm to rotate the
+                         front face of the cube counterclockwise.
+            Parameters:
+                rep (int): The number of repetitions of the rotation.
+            Returns:
+                None.
+            Raises:
+                none
+        """
         for i in range(rep):
             # rotate f face
             f_new = np.rot90(self.f, k=1)
@@ -293,6 +293,17 @@ class Encryptor:
             print(l_new)
 
     def __b__ (self, rep):
+        """
+            Function: __b__
+            Description: This private function contains algorithm to rotate the
+                         back face of the cube clockwise.
+            Parameters:
+                rep (int): The number of repetitions of the rotation.
+            Returns:
+                None.
+            Raises:
+                none
+        """
         for i in range(rep):
             # Rotate B face
             b_new = np.rot90(self.b, k=-1)
@@ -335,6 +346,17 @@ class Encryptor:
             print(l_new)
 
     def __bc__ (self, rep):
+        """
+            Function: __bc__
+            Description: This private function contains algorithm to rotate the
+                         front back of the cube counterclockwise.
+            Parameters:
+                rep (int): The number of repetitions of the rotation.
+            Returns:
+                None.
+            Raises:
+                none
+        """
         for i in range(rep):
             # Rotate B face
             b_new = np.rot90(self.b, k=-1)
@@ -376,8 +398,50 @@ class Encryptor:
             print(d_new)
             print(l_new)
 
+    def __bc__ (self, rep):
+        for i in range(rep):
+            # Rotate B face
+            b_new = np.rot90(self.b, k=1)
+
+            # Update affected column when b face is rotated
+            u_new = np.array([
+                self.r[:, 2],
+                self.u[1],
+                self.u[2],
+            ])
+            r_new = np.array([
+                [self.r[0][0], self.r[0][1], self.d[2][2]],
+                [self.r[1][0], self.r[1][1], self.d[2][1]],
+                [self.r[2][0], self.r[2][1], self.d[2][0]]
+            ])
+            d_new = np.array([
+                self.d[0],
+                self.d[1],
+                self.l[:, 0]
+            ])
+            l_new = np.array([
+                [self.u[0][2], self.l[0][1], self.l[0][2]],
+                [self.u[0][1], self.l[1][1], self.l[1][2]],
+                [self.u[0][0], self.l[2][1], self.l[2][2]]
+            ])
+
+            # Save changes on class
+            self.b = np.array(b_new)
+            self.u = np.array(u_new)
+            self.r = np.array(r_new)
+            self.l = np.array(l_new)
+            self.d = np.array(d_new)
+
+            # Print Results
+            print(f"This is ${i} rotation")
+            print(b_new)
+            print(u_new)
+            print(r_new)
+            print(d_new)
+            print(l_new)
+
     def bMove(self, rep):
-        self.__b__(rep)
+        self.__bc__(rep)
 
 
 
@@ -438,4 +502,4 @@ enkrip.d = D
 enkrip.r = R
 enkrip.l = L
 
-enkrip.bMove(1)
+enkrip.bMove(4)
