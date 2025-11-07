@@ -207,13 +207,20 @@ class Encryptor:
             f_new = np.rot90(self.f, k=-1)
 
             # Update affected column when f face is rotated
-            u_new = np.array([self.u[0], self.u[1], self.l[:, 2]])
+            u_new = np.array([self.u[0],
+                              self.u[1],
+                              self.l[:, 2]])
+
             r_new = np.array([
                 [self.u[2][0], self.r[0][1], self.r[2][2]],
                 [self.u[2][1], self.r[1][1], self.r[1][2]],
                 [self.u[2][2], self.r[2][1], self.r[2][2]]
             ])
-            d_new = np.array([self.r[:, 0], self.d[1], self.d[2]])
+
+            d_new = np.array([self.r[:, 0],
+                              self.d[1],
+                              self.d[2]])
+
             l_new = np.array([
                 [self.l[0][0], self.l[0][1], self.d[0][0]],
                 [self.l[1][0], self.l[1][1], self.d[0][1]],
@@ -251,13 +258,20 @@ class Encryptor:
             f_new = np.rot90(self.f, k=1)
 
             # Update affected column when f face is rotated
-            u_new = np.array([self.u[0], self.u[1], self.r[:, 0]])
+            u_new = np.array([self.u[0],
+                              self.u[1],
+                              self.r[:, 0]])
+
             r_new = np.array([
                 [self.d[0][0], self.r[0][1], self.r[2][2]],
                 [self.d[0][1], self.r[1][1], self.r[1][2]],
                 [self.d[0][2], self.r[2][1], self.r[2][2]]
             ])
-            d_new = np.array([self.l[:, 2], self.d[1], self.d[2]])
+
+            d_new = np.array([self.l[:, 2],
+                              self.d[1],
+                              self.d[2]])
+
             l_new = np.array([
                 [self.l[0][0], self.l[0][1], self.u[2][0]],
                 [self.l[1][0], self.l[1][1], self.u[2][1]],
@@ -278,9 +292,92 @@ class Encryptor:
             print(d_new)
             print(l_new)
 
-    def fcMove (self, rep):
-        self.__fc__(rep)
+    def __b__ (self, rep):
+        for i in range(rep):
+            # Rotate B face
+            b_new = np.rot90(self.b, k=-1)
 
+            # Update affected column when b face is rotated
+            u_new = np.array([
+                self.l[::-1, 0],
+                self.u[1],
+                self.u[2],
+            ])
+            r_new = np.array([
+                [self.r[0][0], self.r[0][1],self.u[0][0]],
+                [self.r[1][0], self.r[1][1], self.u[0][1]],
+                [self.r[2][0], self.r[2][1], self.u[0][2]]
+            ])
+            d_new = np.array([
+                self.d[0],
+                self.d[1],
+                self.r[::-1, 2]
+            ])
+            l_new = np.array([
+                [self.d[2][0], self.l[0][1], self.l[0][2]],
+                [self.d[2][1], self.l[1][1], self.l[1][2]],
+                [self.d[2][2], self.l[2][1], self.l[2][2]]
+            ])
+
+            # Save changes on class
+            self.b = np.array(b_new)
+            self.u = np.array(u_new)
+            self.r = np.array(r_new)
+            self.l = np.array(l_new)
+            self.d = np.array(d_new)
+
+            # Print Results
+            print(f"This is ${i} rotation")
+            print(b_new)
+            print(u_new)
+            print(r_new)
+            print(d_new)
+            print(l_new)
+
+    def __bc__ (self, rep):
+        for i in range(rep):
+            # Rotate B face
+            b_new = np.rot90(self.b, k=-1)
+
+            # Update affected column when b face is rotated
+            u_new = np.array([
+                self.l[::-1, 0],
+                self.u[1],
+                self.u[2],
+            ])
+            r_new = np.array([
+                [self.r[0][0], self.r[0][1], self.u[0][0]],
+                [self.r[1][0], self.r[1][1], self.u[0][1]],
+                [self.r[2][0], self.r[2][1], self.u[0][2]]
+            ])
+            d_new = np.array([
+                self.d[0],
+                self.d[1],
+                self.r[::-1, 2]
+            ])
+            l_new = np.array([
+                [self.d[2][0], self.l[0][1], self.l[0][2]],
+                [self.d[2][1], self.l[1][1], self.l[1][2]],
+                [self.d[2][2], self.l[2][1], self.l[2][2]]
+            ])
+
+            # Save changes on class
+            self.b = np.array(b_new)
+            self.u = np.array(u_new)
+            self.r = np.array(r_new)
+            self.l = np.array(l_new)
+            self.d = np.array(d_new)
+
+            # Print Results
+            print(f"This is ${i} rotation")
+            print(b_new)
+            print(u_new)
+            print(r_new)
+            print(d_new)
+            print(l_new)
+
+    def bMove(self, rep):
+        self.__b__(rep)
 
 
 
@@ -341,4 +438,4 @@ enkrip.d = D
 enkrip.r = R
 enkrip.l = L
 
-enkrip.fcMove(1)
+enkrip.bMove(1)
