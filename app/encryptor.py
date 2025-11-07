@@ -52,7 +52,10 @@ class Encryptor:
         self.dmax = 128
         self.rmax = 160
         self.lmax = 192
-
+        self.process = [["lc", "rc", "uc", "dc"],
+                        ["fc", "l", "r", "u"],
+                        ["d", "f"],
+                        []]
 
 
 #================ PRE-ENCRYPTION ======================================
@@ -143,6 +146,7 @@ class Encryptor:
         return binary_key
 
 
+
 #================ ENCRYPTION PROCESSES=================================
     """
         The partial_data array contains all the 6 faces of the cube. Assume the following:
@@ -186,6 +190,53 @@ class Encryptor:
             ]
         ]
     """
+    def __f__ (self, rep):
+        """
+        Function: __f__
+        Description: This private function contains algorithm to rotate the
+                     front face of the cube.
+        Parameters:
+            rep (int): The number of repetitions of the rotation.
+        Returns:
+            None.
+        Raises:
+            none
+        """
+        for i in range(rep):
+            # rotate f face
+            f_new = np.rot90(self.f, k=-1)
+
+            # Update affected column when f face is rotated
+            u_new = np.array([self.u[0], self.u[1], self.l[:, 2]])
+            r_new = np.array([
+                [self.u[2][0], self.r[0][1], self.r[2][2]],
+                [self.u[2][1], self.r[1][1], self.r[1][2]],
+                [self.u[2][2], self.r[2][1], self.r[2][2]]
+            ])
+            d_new = np.array([self.r[:, 0], self.d[1], self.d[2]])
+            l_new = np.array([
+                [self.l[0][0], self.l[0][1], self.d[0][0]],
+                [self.l[1][0], self.l[1][1], self.d[0][1]],
+                [self.l[2][0], self.l[2][1], self.d[0][2]]
+            ])
+
+            # Save the changes on the class arrays
+            self.f = np.array(f_new)
+            self.d = np.array(d_new)
+            self.u = np.array(u_new)
+            self.r = np.array(r_new)
+            self.l = np.array(l_new)
+
+            print(f"This is ${i} rotation")
+            print(f_new)
+            print(u_new)
+            print(r_new)
+            print(d_new)
+            print(l_new)
+
+    def fMove(self, rep):
+        self.__f__(rep)
+
 
 
 
@@ -193,5 +244,55 @@ class Encryptor:
 
 #======================================================================
 
-enkrip = Encryptor("3f1a7c8b9d2e4f061234abcd56789ef0fedcba98765432100112233445566778899aabbccddeeff00112233445566778899aabbccddeeff0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", [123,456,789])
-enkrip.encrypt()
+
+# Front face
+F = np.array([
+    ["F1", "F2", "F3"],
+    ["F4", "F5", "F6"],
+    ["F7", "F8", "F9"]
+])
+
+# Back face
+B = np.array([
+    ["B1", "B2", "B3"],
+    ["B4", "B5", "B6"],
+    ["B7", "B8", "B9"]
+])
+
+# Up face
+U = np.array([
+    ["U1", "U2", "U3"],
+    ["U4", "U5", "U6"],
+    ["U7", "U8", "U9"]
+])
+
+# Down face
+D = np.array([
+    ["D1", "D2", "D3"],
+    ["D4", "D5", "D6"],
+    ["D7", "D8", "D9"]
+])
+
+# Right face
+R = np.array([
+    ["R1", "R2", "R3"],
+    ["R4", "R5", "R6"],
+    ["R7", "R8", "R9"]
+])
+
+# Left face
+L = np.array([
+    ["L1", "L2", "L3"],
+    ["L4", "L5", "L6"],
+    ["L7", "L8", "L9"]
+])
+
+enkrip = Encryptor("asd", [1,2,3])
+enkrip.f = F
+enkrip.b = B
+enkrip.u = U
+enkrip.d = D
+enkrip.r = R
+enkrip.l = L
+
+enkrip.fMove()
