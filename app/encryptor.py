@@ -13,6 +13,7 @@ from itertools import zip_longest
 
 #============== LIBRARIES =============================================
 import numpy as np
+import hashlib
 import secrets
 #======================================================================
 
@@ -35,11 +36,88 @@ class Encryptor:
         self.data = data
         self.encryption_arr = encryption_arr
         self.max_bit = 256
+        self.cubeMax = 16
         self.repetitions_key = self.__keyGenerator__(encryption_arr[1])
         self.process_key = self.__keyGenerator__(encryption_arr[2])
+        self.f = []
+        self.b = []
+        self.u = []
+        self.d = []
+        self.r = []
+        self.l = []
+        self.window = 192
+        self.fmax = 32
+        self.bmax = 64
+        self.umax = 96
+        self.dmax = 128
+        self.rmax = 160
+        self.lmax = 192
+
 
 
 #================ PRE-ENCRYPTION ======================================
+    def __cubeFill__ (self, data):
+        """
+        Function: __cubeFill__
+        Description: This private function is for simply filling
+                     all the faces of the cube with data.
+        Parameters:
+            data (str): This is the data to be encrypted
+        Returns:
+            None
+        Raises:
+            none
+        """
+
+        # It iterates all from 0 to 192, jumping 2 every loop
+        for i in range(0, self.window, 2):
+            # This checks if the length of the data is long enough
+            # If the data is not long enough for 192 character
+            # It will just append 0 to it
+            if i < len(data):
+                data_pair = data[i:i + 2]
+                if len(data_pair) == 1:
+                    data_pair = ''.join(data_pair + '0')
+            else:
+                data_pair = "00"
+
+            # This checks which face should be filled
+            if i < self.fmax:
+                self.f = np.append(self.f, data_pair)
+            elif i < self.bmax:
+                self.b = np.append(self.b, data_pair)
+            elif i < self.umax:
+                self.u = np.append(self.u, data_pair)
+            elif i < self.dmax:
+                self.d = np.append(self.d, data_pair)
+            elif i < self.rmax:
+                self.r = np.append(self.r, data_pair)
+            elif i < self.lmax:
+                self.l = np.append(self.l, data_pair)
+
+        self.__cubeFinalizer__()
+
+
+
+    def __cubeFinalizer__ (self):
+        f = np.array(self.f[:9]).reshape(3, 3)
+        b = np.array(self.b[:9]).reshape(3, 3)
+        u = np.array(self.u[:9]).reshape(3, 3)
+        d = np.array(self.d[:9]).reshape(3, 3)
+        r = np.array(self.r[:9]).reshape(3, 3)
+        l = np.array(self.l[:9]).reshape(3, 3)
+        print(f)
+        print(b)
+        print(u)
+        print(d)
+        print(r)
+        print(l)
+
+    def encrypt(self):
+        self.__cubeFill__(self.data)
+
+
+
     def __keyGenerator__(self, key):
         """
         Function: __keyGenerator__
@@ -108,13 +186,12 @@ class Encryptor:
             ]
         ]
     """
-    
+
+
 
 
 
 #======================================================================
 
-enkrip = Encryptor("abc", [12312412, 523511, 89324709275])
-
-print(f" Repetition Key: ${enkrip.repetitions_key}")
-print(f" Process Key: ${enkrip.process_key}")
+enkrip = Encryptor("3f1a7c8b9d2e4f061234abcd56789ef0fedcba98765432100112233445566778899aabbccddeeff00112233445566778899aabbccddeeff0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", [123,456,789])
+enkrip.encrypt()

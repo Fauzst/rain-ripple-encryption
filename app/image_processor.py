@@ -51,13 +51,15 @@ class ImageProcessor:
         except UnidentifiedImageError:
             raise ValueError("File is not a valid image")
         # Checks if the file is not the valid dimension.
-
+        """
         if img.width != ImageProcessor.__WIDTH or img.height != ImageProcessor.__HEIGHT:
             raise ValueError(f"Image must be {ImageProcessor.__WIDTH}x{ImageProcessor.__HEIGHT} pixels.")
-
+        """
         # Converts the image into a NumPy array. Then convert it into bytes.
         img_array = np.array(img)
-        img_bytes = img_array.tobytes()
+        img_bytes = img_array.tobytes() # returns \x00\xf6... binary data format
+
+        print(img_bytes)
 
         # Create a binary file containing image information.
         with open("img.bin", "wb") as file:
@@ -124,3 +126,6 @@ class ImageProcessor:
         self.__image_decoder(binary)
 
 #=========================== END OF SOURCE CODE ======================================
+image = "img.png"
+image_processor = ImageProcessor()
+image_processor.image_encode(image)
