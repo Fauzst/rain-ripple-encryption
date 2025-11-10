@@ -292,11 +292,53 @@ class Encryptor:
             print(d_new)
             print(l_new)
 
+    def __bc__ (self, rep):
+        for i in range(rep):
+            # Rotate B face
+            b_new = np.rot90(self.b, k=1)
+
+            # Update affected column when b face is rotated
+            u_new = np.array([
+                self.r[:, 2],
+                self.u[1],
+                self.u[2],
+            ])
+            r_new = np.array([
+                [self.r[0][0], self.r[0][1], self.d[2][2]],
+                [self.r[1][0], self.r[1][1], self.d[2][1]],
+                [self.r[2][0], self.r[2][1], self.d[2][0]]
+            ])
+            d_new = np.array([
+                self.d[0],
+                self.d[1],
+                self.l[:, 0]
+            ])
+            l_new = np.array([
+                [self.u[0][2], self.l[0][1], self.l[0][2]],
+                [self.u[0][1], self.l[1][1], self.l[1][2]],
+                [self.u[0][0], self.l[2][1], self.l[2][2]]
+            ])
+
+            # Save changes on class
+            self.b = np.array(b_new)
+            self.u = np.array(u_new)
+            self.r = np.array(r_new)
+            self.l = np.array(l_new)
+            self.d = np.array(d_new)
+
+            # Print Results
+            print(f"This is ${i} rotation")
+            print(b_new)
+            print(u_new)
+            print(r_new)
+            print(d_new)
+            print(l_new)
+
     def __b__ (self, rep):
         """
             Function: __b__
             Description: This private function contains algorithm to rotate the
-                         back face of the cube clockwise.
+                         back face of the cube counterclockwise.
             Parameters:
                 rep (int): The number of repetitions of the rotation.
             Returns:
@@ -345,103 +387,358 @@ class Encryptor:
             print(d_new)
             print(l_new)
 
-    def __bc__ (self, rep):
-        """
-            Function: __bc__
-            Description: This private function contains algorithm to rotate the
-                         front back of the cube counterclockwise.
-            Parameters:
-                rep (int): The number of repetitions of the rotation.
-            Returns:
-                None.
-            Raises:
-                none
-        """
+    def __u__ (self, rep):
         for i in range(rep):
-            # Rotate B face
-            b_new = np.rot90(self.b, k=-1)
+            # Rotate U face
+            u_new = np.rot90(self.u, k=-1)
 
-            # Update affected column when b face is rotated
-            u_new = np.array([
-                self.l[::-1, 0],
-                self.u[1],
-                self.u[2],
+            # Update affected faces when u face is rotated
+            f_new = np.array([
+                self.r[0],
+                self.f[1],
+                self.f[2],
             ])
+
             r_new = np.array([
-                [self.r[0][0], self.r[0][1], self.u[0][0]],
-                [self.r[1][0], self.r[1][1], self.u[0][1]],
-                [self.r[2][0], self.r[2][1], self.u[0][2]]
-            ])
-            d_new = np.array([
-                self.d[0],
-                self.d[1],
-                self.r[::-1, 2]
-            ])
-            l_new = np.array([
-                [self.d[2][0], self.l[0][1], self.l[0][2]],
-                [self.d[2][1], self.l[1][1], self.l[1][2]],
-                [self.d[2][2], self.l[2][1], self.l[2][2]]
+                self.b[0],
+                self.r[1],
+                self.r[2]
             ])
 
-            # Save changes on class
-            self.b = np.array(b_new)
-            self.u = np.array(u_new)
+            b_new = np.array([
+                self.l[0],
+                self.b[1],
+                self.b[2]
+            ])
+
+            l_new = np.array([
+                self.f[0],
+                self.l[1],
+                self.l[2]
+            ])
+
+            # Save changes on the class
+            self.f = np.array(f_new)
             self.r = np.array(r_new)
             self.l = np.array(l_new)
-            self.d = np.array(d_new)
-
-            # Print Results
-            print(f"This is ${i} rotation")
-            print(b_new)
-            print(u_new)
-            print(r_new)
-            print(d_new)
-            print(l_new)
-
-    def __bc__ (self, rep):
-        for i in range(rep):
-            # Rotate B face
-            b_new = np.rot90(self.b, k=1)
-
-            # Update affected column when b face is rotated
-            u_new = np.array([
-                self.r[:, 2],
-                self.u[1],
-                self.u[2],
-            ])
-            r_new = np.array([
-                [self.r[0][0], self.r[0][1], self.d[2][2]],
-                [self.r[1][0], self.r[1][1], self.d[2][1]],
-                [self.r[2][0], self.r[2][1], self.d[2][0]]
-            ])
-            d_new = np.array([
-                self.d[0],
-                self.d[1],
-                self.l[:, 0]
-            ])
-            l_new = np.array([
-                [self.u[0][2], self.l[0][1], self.l[0][2]],
-                [self.u[0][1], self.l[1][1], self.l[1][2]],
-                [self.u[0][0], self.l[2][1], self.l[2][2]]
-            ])
-
-            # Save changes on class
             self.b = np.array(b_new)
             self.u = np.array(u_new)
-            self.r = np.array(r_new)
-            self.l = np.array(l_new)
-            self.d = np.array(d_new)
 
-            # Print Results
+            # Print results
             print(f"This is ${i} rotation")
-            print(b_new)
             print(u_new)
             print(r_new)
-            print(d_new)
+            print(b_new)
             print(l_new)
+            print(f_new)
 
-    def bMove(self, rep):
-        self.__bc__(rep)
+
+    def __uc__ (self, rep):
+        for i in range(rep):
+            # Rotate U face counterclockwise
+            u_new = np.rot90(self.u, k=1)
+
+            # Update affected faces when U is rotated
+            f_new = np.array([
+                self.l[0],
+                self.f[1],
+                self.f[2],
+            ])
+
+            r_new = np.array([
+                self.f[0],
+                self.r[1],
+                self.r[2],
+                ])
+
+            b_new = np.array([
+                self.r[0],
+                self.b[1],
+                self.b[2]
+            ])
+
+            l_new = np.array([
+                self.b[0],
+                self.l[1],
+                self.l[2],
+            ])
+
+            # Save changes in the class
+            self.u = np.array(u_new)
+            self.f = np.array(f_new)
+            self.r = np.array(r_new)
+            self.l = np.array(l_new)
+            self.b = np.array(b_new)
+
+            # Print results
+            print(f"This is ${i} rotation")
+            print(u_new)
+            print(r_new)
+            print(b_new)
+            print(l_new)
+            print(f_new)
+
+    def __d__ (self, rep):
+        for i in range(rep):
+            # Rotate D face clockwise
+            d_new = np.rot90(self.d, k=-1)
+
+            f_new = np.array([
+                self.f[0],
+                self.f[1],
+                self.l[2]
+            ])
+
+            r_new = np.array([
+                self.r[0],
+                self.r[1],
+                self.f[2]
+            ])
+
+            b_new = np.array([
+                self.b[0],
+                self.b[1],
+                self.r[2]
+            ])
+
+            l_new = np.array([
+                self.l[0],
+                self.l[1],
+                self.b[2]
+            ])
+
+            # Save changes to class
+            self.d = np.array(d_new)
+            self.f = np.array(f_new)
+            self.r = np.array(r_new)
+            self.b = np.array(b_new)
+            self.l = np.array(l_new)
+
+            # Print results
+            print(f"This is ${i} rotation")
+            print(d_new)
+            print(f_new)
+            print(b_new)
+            print(l_new)
+            print(r_new)
+
+    def __dc__ (self, rep):
+        for i in range(rep):
+            d_new = np.rot90(self.d, k=1)
+
+            f_new = np.array([
+                self.f[0],
+                self.f[1],
+                self.r[2]
+            ])
+
+            r_new = np.array([
+                self.r[0],
+                self.r[1],
+                self.b[2]
+            ])
+
+            b_new = np.array([
+                self.b[0],
+                self.b[1],
+                self.l[2]
+            ])
+
+            l_new = np.array([
+                self.l[0],
+                self.l[1],
+                self.f[2]
+            ])
+
+            # Save changes to class
+            self.d = np.array(d_new)
+            self.f = np.array(f_new)
+            self.r = np.array(r_new)
+            self.b = np.array(b_new)
+            self.l = np.array(l_new)
+
+            # Print results
+            print(f"This is ${i} rotation")
+            print(d_new)
+            print(f_new)
+            print(b_new)
+            print(l_new)
+            print(r_new)
+
+    def __r__ (self,rep):
+        for i in range(rep):
+            r_new = np.rot90(self.r, k=-1)
+
+            f_new = np.array([
+                [self.f[0][0], self.f[0][1],self.d[0][2]],
+                [self.f[1][0], self.f[1][1],self.d[1][2]],
+                [self.f[2][0], self.f[2][1],self.d[2][2]],
+            ])
+
+            u_new = np.array([
+                [self.u[0][0], self.u[0][1],self.f[0][2]],
+                [self.u[1][0], self.u[1][1],self.f[1][2]],
+                [self.u[2][0], self.u[2][1],self.f[2][2]],
+            ])
+
+            b_new = np.array([
+                [self.b[0][0], self.b[0][1],self.u[2][2]],
+                [self.b[1][0], self.b[1][1],self.u[1][2]],
+                [self.b[2][0], self.b[2][1],self.u[0][2]],
+            ])
+
+            d_new = np.array([
+                [self.d[0][0], self.d[1][1],self.b[2][2]],
+                [self.d[1][0], self.d[1][1],self.b[1][2]],
+                [self.d[2][0], self.d[2][1],self.b[0][2]],
+            ])
+
+            # Save changes to class
+            self.r = np.array(r_new)
+            self.f = np.array(f_new)
+            self.u = np.array(u_new)
+            self.b = np.array(b_new)
+            self.d = np.array(d_new)
+
+            # Print result
+            print(f"This is ${i} rotation")
+            print(r_new)
+            print(f_new)
+            print(u_new)
+            print(b_new)
+            print(d_new)
+
+    def __rc___ (self,rep):
+        for i in range(rep):
+            r_new = np.rot90(self.r, k=1)
+
+            f_new = np.array([
+                [self.f[0][0], self.f[0][1],self.u[0][2]],
+                [self.f[1][0], self.f[1][1],self.u[1][2]],
+                [self.f[2][0], self.f[2][1],self.u[2][2]],
+            ])
+
+            u_new = np.array([
+                [self.u[0][0], self.u[0][1],self.b[2][2]],
+                [self.u[1][0], self.u[1][1],self.b[1][2]],
+                [self.u[2][0], self.u[2][1],self.b[0][2]],
+            ])
+
+            b_new = np.array([
+                [self.b[0][0], self.b[0][1],self.d[2][2]],
+                [self.b[1][0], self.b[1][1],self.d[1][2]],
+                [self.b[2][0], self.b[2][1],self.d[0][2]],
+            ])
+
+            d_new = np.array([
+                [self.d[0][0], self.d[1][1],self.f[0][2]],
+                [self.d[1][0], self.d[1][1],self.f[1][2]],
+                [self.d[2][0], self.d[2][1],self.f[2][2]],
+            ])
+
+            # Save changes to class
+            self.r = np.array(r_new)
+            self.f = np.array(f_new)
+            self.u = np.array(u_new)
+            self.b = np.array(b_new)
+            self.d = np.array(d_new)
+
+            # Print result
+            print(f"This is ${i} rotation")
+            print(r_new)
+            print(f_new)
+            print(u_new)
+            print(b_new)
+            print(d_new)
+
+    def __l__ (self,rep):
+        for i in range(rep):
+            l_new = np.rot90(self.l, k=-1)
+
+            f_new = np.array([
+                [self.u[0][0], self.f[0][1], self.f[0][2]],
+                [self.u[1][0], self.f[1][1], self.f[1][2]],
+                [self.u[2][0], self.f[2][1], self.f[2][2]],
+            ])
+
+            u_new = np.array([
+                [self.b[2][0], self.u[0][1], self.u[0][2]],
+                [self.b[1][0], self.u[1][1], self.u[1][2]],
+                [self.b[0][0], self.u[2][1], self.u[2][2]],
+            ])
+
+            b_new = np.array([
+                [self.d[2][0], self.b[0][1], self.b[0][2]],
+                [self.d[1][0], self.b[1][1], self.b[1][2]],
+                [self.d[0][0], self.b[2][1], self.b[2][2]],
+            ])
+
+            d_new = np.array([
+                [self.f[0][0], self.d[0][1], self.d[0][2]],
+                [self.f[1][0], self.d[1][1], self.d[1][2]],
+                [self.f[2][0], self.d[2][1], self.d[2][2]],
+            ])
+
+            # Save changes to class
+            self.l = np.array(l_new)
+            self.f = np.array(f_new)
+            self.u = np.array(u_new)
+            self.b = np.array(b_new)
+            self.d = np.array(d_new)
+
+            # Print result
+            print(f"This is ${i} rotation")
+            print(l_new)
+            print(f_new)
+            print(u_new)
+            print(b_new)
+            print(d_new)
+
+    def __lc__ (self,rep):
+        for i in range(rep):
+            l_new = np.rot90(self.l, k=1)
+
+            f_new = np.array([
+                [self.d[0][0], self.f[0][1], self.f[0][2]],
+                [self.d[1][0], self.f[1][1], self.f[1][2]],
+                [self.d[2][0], self.f[2][1], self.f[2][2]],
+            ])
+
+            u_new = np.array([
+                [self.f[0][0], self.u[0][1], self.u[0][2]],
+                [self.f[1][0], self.u[1][1], self.u[1][2]],
+                [self.f[2][0], self.u[2][1], self.u[2][2]],
+            ])
+
+            b_new = np.array([
+                [self.u[2][0], self.b[0][1], self.b[0][2]],
+                [self.u[1][0], self.b[1][1], self.b[1][2]],
+                [self.u[0][0], self.b[2][1], self.b[2][2]],
+            ])
+
+            d_new = np.array([
+                [self.b[2][0], self.d[0][1], self.d[0][2]],
+                [self.b[1][0], self.d[1][1], self.d[1][2]],
+                [self.b[0][0], self.d[2][1], self.d[2][2]],
+            ])
+
+            # Save changes to class
+            self.l = np.array(l_new)
+            self.f = np.array(f_new)
+            self.u = np.array(u_new)
+            self.b = np.array(b_new)
+            self.d = np.array(d_new)
+
+            # Print result
+            print(f"This is ${i} rotation")
+            print(l_new)
+            print(f_new)
+            print(u_new)
+            print(b_new)
+            print(d_new)
+
+
+
 
 
 
@@ -502,4 +799,4 @@ enkrip.d = D
 enkrip.r = R
 enkrip.l = L
 
-enkrip.bMove(4)
+enkrip.__r__(1)
